@@ -17,7 +17,12 @@ module WindowArranger
     desc "Update", "Update size and position of windows"
     def update
       definitions = YAML.safe_load($stdin.read)
-      WindowArranger::Script.update_bounds(definitions)
+      WindowArranger::Script.update_bounds(definitions).each do |log|
+        next unless log["type"] == "update"
+
+        puts "Updated: #{log["definition"]}"
+      end
+      puts "Done."
     end
   end
 end

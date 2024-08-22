@@ -51,7 +51,7 @@ module WindowArranger
         function run(argv) {
           var definitions = JSON.parse(argv[0]);
           var systemEvents = Application('System Events');
-          var allWindows = [];
+          var logs = [];
 
           systemEvents.processes().forEach(function(proc) {
             proc.windows().forEach(function(win) {
@@ -60,16 +60,18 @@ module WindowArranger
                 if (match(attrs, definition)) {
                   if (definition.position) win.position = definition.position;
                   if (definition.size) win.size = definition.size;
+                  logs.push({type: "update", attributes: attrs, definition: definition})
                 }
               });
             });
           });
 
-          return JSON.stringify(allWindows);
+          return JSON.stringify(logs);
         }
       JS
 
-      out, * = osascript(script, JSON.dump(definitions))
+      out, err, * = osascript(script, JSON.dump(definitions))
+      warn err unless err.empty?
       JSON.parse(out)
     end
   end
