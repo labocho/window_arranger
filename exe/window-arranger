@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require "window_arranger"
+
+WindowArranger::CLI.start(ARGV)
