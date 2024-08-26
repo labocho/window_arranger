@@ -1,28 +1,52 @@
-# WindowArranger
+# window-arranger
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/window_arranger`. To experiment with that code, run `bin/console` for an interactive prompt.
+`window-arranger` is a command-line tool for macOS that allows you to manage your application windows by list their positions and sizes to a YAML format, and configuring them using a YAML format. This tool is useful for developers or streamers who want to automate their window layouts.
 
-TODO: Delete this and the text above, and describe your gem
+## Requirements
+
+    Ruby (>= 3)
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'window_arranger'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
 
     $ gem install window_arranger
 
 ## Usage
 
-TODO: Write usage instructions here
+### List Window Layout
+
+You can list the current window layout to a YAML format with the following command:
+
+    $ window-arranger list
+
+### Update Window Layout
+
+To update a window layout from a YAML format, use:
+
+    $ cat windows.yml | window-arranger update
+
+
+### Example YAML Format
+
+Here’s an example of what the YAML string might look like:
+
+    ---
+    - appName: Arc # matches app named `Arc`
+      position:
+      - 0
+      - 25
+      size:
+      - 1280
+      - 1067
+    - appName:
+        regexp: ^Sla # matches app that has name starts widh `Sl` (eg. Slack)
+      position:
+      - 2560
+      - 25
+      size:
+      - 1280
+      - 1067
+
+
 
 ## Development
 
