@@ -39,13 +39,20 @@ module WindowArranger
     end
 
     # 3s くらいかかる
-    # definitions: [{appName: String, appShortName: String, windowName: String, position: [x, y], size: [width, height]}]
+    # definitions: [{appName: (String|{regexp: String}), appShortName: (String|{regexp: String}), windowName: (String|{regexp: String}), position: [x: Number, y: Number], size: [width: Number, height: Number]}]
     def update_bounds(definitions)
       script = <<~JS
+        function matchPattern(pattern, str) {
+          if (pattern.regexp) {
+            return new RegExp(pattern.regexp).test(str);
+          } else {
+            return pattern === str;
+          }
+        }
         function match(attributes, definition) {
-          if (definition.appName && attributes.appName !== definition.appName) return false;
-          if (definition.appShortName && attributes.appShortName !== definition.appShortName) return false;
-          if (definition.windowName && attributes.windowName !== definition.windowName) return false;
+          if (definition.appName && matchPattern(definition.appName, attributes.appName) !== true) return false;
+          if (definition.appShortName && matchPattern(definition.appShortName, attributes.appShortName) !== true) return false;
+          if (definition.windowName && matchPattern(definition.windowName, attributes.windowName) !== true) return false;
           return true;
         }
         function run(argv) {
